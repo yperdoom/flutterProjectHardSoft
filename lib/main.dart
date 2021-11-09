@@ -27,6 +27,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int count = 0;
+  bool get isEmpty => count == 0;
+  bool get isFull => count == 20;
+  String messageCabaco = "";
+
+  get child => null;
 
   void decrement() {
     setState(() {
@@ -37,7 +42,9 @@ class _HomePageState extends State<HomePage> {
 
   void increment() {
     setState(() {
-      count++;
+      if (!isFull) {
+        count++;
+      }
     });
     print(count);
   }
@@ -48,29 +55,29 @@ class _HomePageState extends State<HomePage> {
       //drawer: Drawer(),
       backgroundColor: Colors.black,
       body: Container(
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/ledOn.png'),
             fit: BoxFit.fitWidth,
           ),
-        ),
+        ),*/
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Monitoring',
+            Text(
+              isFull ? 'Lotado' : 'Monitoring',
               style: TextStyle(
                 fontSize: 30,
-                color: Colors.white,
+                color: isFull ? Colors.red : Colors.white,
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 32),
             Text(
               count.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 80,
-                color: Colors.white,
+                color: isFull ? Colors.red : Colors.white,
               ),
             ),
             const SizedBox(height: 32),
@@ -78,9 +85,10 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: decrement,
+                  onPressed: isEmpty ? null : decrement,
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isEmpty ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     primary: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -97,9 +105,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(width: 38),
                 TextButton(
-                  onPressed: increment,
+                  onPressed: isFull ? null : increment,
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isFull ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     primary: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -113,6 +122,26 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20,
                     ),
                   ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/ledOff.png',
+                  width: 90,
+                ),
+                const SizedBox(width: 16),
+                Image.asset(
+                  'assets/images/ledOff.png',
+                  width: 90,
+                ),
+                const SizedBox(width: 16),
+                Image.asset(
+                  'assets/images/ledOff.png',
+                  width: 90,
                 ),
               ],
             ),
