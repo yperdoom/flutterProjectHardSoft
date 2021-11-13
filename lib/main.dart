@@ -1,4 +1,8 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
+
+const request = "localhost";
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +15,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
+    return const MaterialApp(
+      // debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }
@@ -26,28 +30,48 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int count = 0;
-  bool get isEmpty => count == 0;
-  bool get isFull => count == 20;
-  String messageCabaco = "";
+  bool l1 = false; // red
+  bool l2 = false; // yellow
+  bool l3 = false; // green
+  bool b1 = false; // red
+  bool b2 = false; // yellow
+  bool b3 = false; // green
+
+  bool bO1 = false;
+  bool bO2 = false;
+  bool bO3 = false;
 
   get child => null;
 
-  void decrement() {
+  void button1() {
     setState(() {
-      count--;
+      b1 = !b1;
+      l1 = !l1;
     });
-    print(count);
   }
 
-  void increment() {
+  void button2() {
     setState(() {
-      if (!isFull) {
-        count++;
-      }
+      b2 = !b2;
+      l2 = !l2;
     });
-    print(count);
   }
+
+  void button3() {
+    setState(() {
+      b3 = !b3;
+      l3 = !l3;
+    });
+  }
+
+  // void increment() {
+  //   setState(() {
+  //     // if (!isFull) {
+  //     //   count++;
+  //     // }
+  //   });
+  //   // print(count);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,84 +88,72 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              isFull ? 'Lotado' : 'Monitoring',
+            const Text(
+              'Monitor de nível lógico',
               style: TextStyle(
                 fontSize: 30,
-                color: isFull ? Colors.red : Colors.white,
+                color: Colors.white,
                 fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              count.toString(),
-              style: TextStyle(
-                fontSize: 80,
-                color: isFull ? Colors.red : Colors.white,
               ),
             ),
             const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(
-                  onPressed: isEmpty ? null : decrement,
-                  style: TextButton.styleFrom(
-                    backgroundColor:
-                        isEmpty ? Colors.white.withOpacity(0.2) : Colors.white,
-                    fixedSize: const Size(100, 100),
-                    primary: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'saiu',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 38),
-                TextButton(
-                  onPressed: isFull ? null : increment,
-                  style: TextButton.styleFrom(
-                    backgroundColor:
-                        isFull ? Colors.white.withOpacity(0.2) : Colors.white,
-                    fixedSize: const Size(100, 100),
-                    primary: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'entrou',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
+                l1
+                    ? Image.asset(
+                        'assets/images/ledOn.png',
+                        width: 90,
+                      )
+                    : Image.asset(
+                        'assets/images/ledOff.png',
+                        width: 90,
+                      ),
+                const SizedBox(width: 16),
+                l2
+                    ? Image.asset(
+                        'assets/images/ledOn.png',
+                        width: 90,
+                      )
+                    : Image.asset(
+                        'assets/images/ledOff.png',
+                        width: 90,
+                      ),
+                const SizedBox(width: 16),
+                l3
+                    ? Image.asset(
+                        'assets/images/ledOn.png',
+                        width: 90,
+                      )
+                    : Image.asset(
+                        'assets/images/ledOff.png',
+                        width: 90,
+                      ),
               ],
             ),
             const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/ledOff.png',
-                  width: 90,
+                GestureDetector(
+                  onTap: () => {button1()},
+                  child: bO1
+                      ? Image.asset('assets/images/buttonOn.png', scale: 5)
+                      : Image.asset('assets/images/buttonOff.png', scale: 5),
                 ),
-                const SizedBox(width: 16),
-                Image.asset(
-                  'assets/images/ledOff.png',
-                  width: 90,
+                const SizedBox(width: 15),
+                GestureDetector(
+                  onTap: () => {button2()},
+                  child: bO2
+                      ? Image.asset('assets/images/buttonOff.png', scale: 5)
+                      : Image.asset('assets/images/buttonOff.png', scale: 5),
                 ),
-                const SizedBox(width: 16),
-                Image.asset(
-                  'assets/images/ledOff.png',
-                  width: 90,
+                const SizedBox(width: 15),
+                GestureDetector(
+                  onTap: () => {button3()},
+                  child: bO3
+                      ? Image.asset('assets/images/buttonOn.png', scale: 5)
+                      : Image.asset('assets/images/buttonOff.png', scale: 5),
                 ),
               ],
             ),
