@@ -57,11 +57,10 @@ class _HomePageState extends State<HomePage> {
   bool b2 = false; // yellow
   bool b3 = false; // green
 
-  bool dataDiferent = false;
-
-  bool bO1 = false;
-  bool bO2 = false;
-  bool bO3 = false;
+  // bool dataDiferent = false;
+  // bool bO1 = false;
+  // bool bO2 = false;
+  // bool bO3 = false;
 
   get child => null;
 
@@ -70,7 +69,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         l1 = !l1;
       });
-    } else {}
+    }
 
     if (messageReceived[1] == '1') {
       setState(() {
@@ -130,6 +129,7 @@ class _HomePageState extends State<HomePage> {
 
     messageSend;
 
+    // ignore: avoid_print
     print(messageSend);
 
     http.post(
@@ -160,9 +160,66 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              l1
+                  ? Image.asset(
+                      'assets/images/ledRed.png',
+                      width: 90,
+                    )
+                  : Image.asset(
+                      'assets/images/ledOff.png',
+                      width: 90,
+                    ),
+              const SizedBox(width: 16),
+              l2
+                  ? Image.asset(
+                      'assets/images/ledYellow.png',
+                      width: 90,
+                    )
+                  : Image.asset(
+                      'assets/images/ledOff.png',
+                      width: 90,
+                    ),
+              const SizedBox(width: 16),
+              l3
+                  ? Image.asset(
+                      'assets/images/ledGreen.png',
+                      width: 90,
+                    )
+                  : Image.asset(
+                      'assets/images/ledOff.png',
+                      width: 90,
+                    ),
+            ],
+          ),
+          const SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => {button1()},
+                child: Image.asset('assets/images/buttonOff.png', scale: 5),
+              ),
+              const SizedBox(width: 15),
+              GestureDetector(
+                onTap: () => {button2()},
+                child: Image.asset('assets/images/buttonOff.png', scale: 5),
+              ),
+              const SizedBox(width: 15),
+              GestureDetector(
+                onTap: () => {button3()},
+                child: Image.asset('assets/images/buttonOff.png', scale: 5),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // ignore: sized_box_for_whitespace
           Container(
-            width: 250,
-            height: 15,
+            // width: 5,
+            color: Colors.red,
+            height: 5,
             child: FutureBuilder<String>(
               future: getFutureDados(),
               builder: (
@@ -181,72 +238,24 @@ class _HomePageState extends State<HomePage> {
                   // ignore: avoid_print
                   print(':|');
                 }
-                return Row();
+                return const SizedBox();
               },
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              l1
-                  ? Image.asset(
-                      'assets/images/ledOn.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
-              const SizedBox(width: 16),
-              l2
-                  ? Image.asset(
-                      'assets/images/ledOn.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
-              const SizedBox(width: 16),
-              l3
-                  ? Image.asset(
-                      'assets/images/ledOn.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
-            ],
-          ),
-          const SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => {button1()},
-                child: bO1
-                    ? Image.asset('assets/images/buttonOn.png', scale: 5)
-                    : Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () => {button2()},
-                child: bO2
-                    ? Image.asset('assets/images/buttonOff.png', scale: 5)
-                    : Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () => {button3()},
-                child: bO3
-                    ? Image.asset('assets/images/buttonOn.png', scale: 5)
-                    : Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-            ],
           ),
         ],
       ),
     );
   }
 }
+
+                // child: bO1
+                //     ? Image.asset('assets/images/buttonOn.png', scale: 5)
+                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
+
+                // child: bO2
+                //     ? Image.asset('assets/images/buttonOff.png', scale: 5)
+                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
+
+                // child: bO3
+                //     ? Image.asset('assets/images/buttonOn.png', scale: 5)
+                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
