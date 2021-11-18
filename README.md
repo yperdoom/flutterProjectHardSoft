@@ -14,3 +14,8 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+PARA RODAR O PROJETO, ANTES DEVE SE ABRIR O ARQUIVO: "lib/main.dart" E ALTERAR A
+VARIAVEL DE URL PARA O ENDERECO CORRESPONDENTE AO IP DO BACKEND, APÓS ISSO, BASTA
+COMPILAR O APP PARA O APARELHO E JÁ ESTARÁ FUNCIONANDO
