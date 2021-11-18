@@ -3,21 +3,22 @@
 // import 'package:async/async.dart';
 // import 'package:flutter/services.dart';
 // import 'dart:html';
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 var end = '192.168.0.147'; // amo
 // var end = '192.168.100.150'; // casa
+// var end = '192.168.100.150'; // unoesc
 // var url = Uri.parse('http://192.168.100.150:3000/');
 var url = Uri.parse('http://' + end + ':3000/');
 
 void main() {
   runApp(const MyApp());
-  chamada();
 }
 
-void chamada() async {}
+// void chamada() async {}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -39,48 +40,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static Future<String> getFutureDados() async => await Future.delayed(
-        const Duration(seconds: 1),
-        () async {
-          http.Response response = await http.get(url);
-
-          return response.body.toString();
-        },
-      );
-
-  String messageReceived = "000";
-  String messageSend = "000";
+  String messageReceived = "0";
+  String messageSend = "0";
   bool l1 = false; // red
   bool l2 = false; // yellow
   bool l3 = false; // green
   bool b1 = false; // red
   bool b2 = false; // yellow
   bool b3 = false; // green
-
-  // bool dataDiferent = false;
-  // bool bO1 = false;
-  // bool bO2 = false;
-  // bool bO3 = false;
+  // bool control = false;
 
   get child => null;
 
-  void atualiza(String messageReceived) {
-    if (messageReceived[0] == '1') {
-      setState(() {
-        l1 = !l1;
-      });
-    }
+  contador() {
+    Timer.periodic(
+        const Duration(
+          milliseconds: 50,
+        ), (Timer t) async {
+      http.Response response = await http.get(url);
+      if (response.body.isNotEmpty) {
+        messageReceived = response.body.toString();
+        atualiza();
+      }
+    });
+  }
 
-    if (messageReceived[1] == '1') {
-      setState(() {
-        l2 = !l2;
-      });
+  Future<void> atualiza() async {
+    if (messageReceived == 'R') {
+      button1();
+      messageReceived = '0';
     }
-
-    if (messageReceived[2] == '1') {
-      setState(() {
-        l3 = !l3;
-      });
+    if (messageReceived == 'Y') {
+      button2();
+      messageReceived = '0';
+    }
+    if (messageReceived == 'G') {
+      button3();
+      messageReceived = '0';
     }
   }
 
@@ -109,28 +105,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   void send() {
-    if (l1) {
-      messageSend = "1";
-    } else {
-      messageSend = "0";
+    if (!l3 && !l2 && !l1) {
+      messageSend = 'A';
     }
-
-    if (l2) {
-      messageSend += "1";
-    } else {
-      messageSend += "0";
+    if (!l3 && !l2 && l1) {
+      messageSend = 'B';
     }
-
-    if (l3) {
-      messageSend += "1";
-    } else {
-      messageSend += "0";
+    if (!l3 && l2 && !l1) {
+      messageSend = 'C';
+    }
+    if (!l3 && l2 && l1) {
+      messageSend = 'D';
+    }
+    if (l3 && !l2 && !l1) {
+      messageSend = 'E';
+    }
+    if (l3 && !l2 && l1) {
+      messageSend = 'F';
+    }
+    if (l3 && l2 && !l1) {
+      messageSend = 'G';
+    }
+    if (l3 && l2 && l1) {
+      messageSend = 'H';
     }
 
     messageSend;
 
     // ignore: avoid_print
-    print(messageSend);
+    // print(messageSend);
 
     http.post(
       url,
@@ -148,114 +151,132 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //drawer: Drawer(),
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Monitor de nível lógico',
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        padding: const EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0),
+        child: SizedBox(
+          // height: 500,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              l1
-                  ? Image.asset(
-                      'assets/images/ledRed.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
-              const SizedBox(width: 16),
-              l2
-                  ? Image.asset(
-                      'assets/images/ledYellow.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
-              const SizedBox(width: 16),
-              l3
-                  ? Image.asset(
-                      'assets/images/ledGreen.png',
-                      width: 90,
-                    )
-                  : Image.asset(
-                      'assets/images/ledOff.png',
-                      width: 90,
-                    ),
+              const Text(
+                'Monitor de nível lógico',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  l1
+                      ? Image.asset(
+                          'assets/images/ledRed.png',
+                          width: 90,
+                        )
+                      : Image.asset(
+                          'assets/images/ledOff.png',
+                          width: 90,
+                        ),
+                  const SizedBox(width: 16),
+                  l2
+                      ? Image.asset(
+                          'assets/images/ledYellow.png',
+                          width: 90,
+                        )
+                      : Image.asset(
+                          'assets/images/ledOff.png',
+                          width: 90,
+                        ),
+                  const SizedBox(width: 16),
+                  l3
+                      ? Image.asset(
+                          'assets/images/ledGreen.png',
+                          width: 90,
+                        )
+                      : Image.asset(
+                          'assets/images/ledOff.png',
+                          width: 90,
+                        ),
+                ],
+              ),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => {button1()},
+                    child: Image.asset('assets/images/buttonOff.png', scale: 5),
+                  ),
+                  const SizedBox(width: 15),
+                  GestureDetector(
+                    onTap: () => {button2()},
+                    child: Image.asset('assets/images/buttonOff.png', scale: 5),
+                  ),
+                  const SizedBox(width: 15),
+                  GestureDetector(
+                    onTap: () => {button3()},
+                    child: Image.asset('assets/images/buttonOff.png', scale: 5),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 150),
+              GestureDetector(
+                onTap: () => {contador()},
+                child: Image.asset('assets/images/buttonOff.png', scale: 5),
+              ),
             ],
           ),
-          const SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => {button1()},
-                child: Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () => {button2()},
-                child: Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () => {button3()},
-                child: Image.asset('assets/images/buttonOff.png', scale: 5),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // ignore: sized_box_for_whitespace
-          Container(
-            // width: 5,
-            color: Colors.red,
-            height: 5,
-            child: FutureBuilder<String>(
-              future: getFutureDados(),
-              builder: (
-                context,
-                snapshot,
-              ) {
-                if (snapshot.hasData) {
-                  messageReceived = snapshot.data.toString();
-                  // ignore: avoid_print
-                  print(':)');
-                  atualiza(messageReceived);
-                } else if (snapshot.hasError) {
-                  // ignore: avoid_print
-                  print(':(');
-                } else {
-                  // ignore: avoid_print
-                  print(':|');
-                }
-                return const SizedBox();
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-                // child: bO1
-                //     ? Image.asset('assets/images/buttonOn.png', scale: 5)
-                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
+// Future<String> getFutureDados = Future<String>.delayed(
+  //   const Duration(seconds: 0),
+  //   () async {
+  //     http.Response response = await http.get(url);
 
-                // child: bO2
-                //     ? Image.asset('assets/images/buttonOff.png', scale: 5)
-                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
+  //     return response.body.toString();
+  //   },
+  // );
 
-                // child: bO3
-                //     ? Image.asset('assets/images/buttonOn.png', scale: 5)
-                //     : Image.asset('assets/images/buttonOff.png', scale: 5),
+            // child: FutureBuilder<String>(
+            //   future: getFutureDados,
+            //   builder: (
+            //     BuildContext context,
+            //     AsyncSnapshot<String> snapshot,
+            //   ) {
+            //     if (snapshot.hasData) {
+            //       messageReceived = snapshot.data.toString();
+            //       atualiza();
+            //       // ignore: avoid_print
+            //       print(':)');
+            //       // Timer.periodic(
+            //       //     const Duration(milliseconds: 500), (Timer t) => {});
+            //       print(messageReceived);
+            //     } else if (snapshot.hasError) {
+            //       // ignore: avoid_print
+            //       print(':(');
+            //     } else {
+            //       // ignore: avoid_print
+            //       print(':|');
+            //     }
+            //     return const SizedBox();
+            //   },
+            // ),
+
+
+// child: bO1
+//     ? Image.asset('assets/images/buttonOn.png', scale: 5)
+//     : Image.asset('assets/images/buttonOff.png', scale: 5),
+
+// child: bO2
+//     ? Image.asset('assets/images/buttonOff.png', scale: 5)
+//     : Image.asset('assets/images/buttonOff.png', scale: 5),
+
+// child: bO3
+//     ? Image.asset('assets/images/buttonOn.png', scale: 5)
+//     : Image.asset('assets/images/buttonOff.png', scale: 5),
