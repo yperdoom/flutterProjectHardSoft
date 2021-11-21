@@ -8,9 +8,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-var end = '192.168.0.147'; // amo
+// var end = '192.168.0.147'; // amo
 // var end = '192.168.100.150'; // casa
-// var end = '192.168.100.150'; // unoesc
+var end = '192.168.196.63'; // casa
+// var end = '191.52.128.18'; // unoesc
 // var url = Uri.parse('http://192.168.100.150:3000/');
 var url = Uri.parse('http://' + end + ':3000/');
 
@@ -221,10 +222,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 150),
+              const SizedBox(height: 130),
               GestureDetector(
                 onTap: () => {contador()},
-                child: Image.asset('assets/images/buttonOff.png', scale: 5),
+                child: Image.asset('assets/images/loading.png', scale: 5),
               ),
             ],
           ),
